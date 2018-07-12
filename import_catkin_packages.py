@@ -270,9 +270,20 @@ depends=(
 \t${ros_depends[@]}%(other_run_dependencies)s
 )
 
-_dir="%(tarball_dir)s"
-source=("${pkgname}-${pkgver}-${_pkgver_patch}.tar.gz"::"%(tarball_url)s")
-sha256sums=('%(tarball_sha)s')
+_dir=${pkgname}
+source=("${_dir}"::"git+%(package_url)s")
+sha256sums=('SKIP')
+
+prepare() {
+\tcd ${srcdir}/${_dir}
+\tgit checkout upstream
+\t_pkgname=$(echo ${pkgname} | sed 's/ros-lunar-//' | sed 's/-/_/')
+
+\tif [ -d ${_pkgname} ]; then
+\t\tgit subtree split -P ${_pkgname} --branch ${_pkgname}
+\t\tgit checkout ${_pkgname}
+\tfi
+}
 
 build() {
 \t# Use ROS environment variables.
