@@ -277,7 +277,7 @@ sha256sums=('SKIP')
 prepare() {
 \tcd ${srcdir}/${_dir}
 \tgit checkout upstream
-\t_pkgname=$(echo ${pkgname} | sed 's/ros-lunar-//' | sed 's/-/_/')
+\t_pkgname=$(echo ${pkgname} | sed 's/ros-lunar-//' | sed 's/-/_/g')
 
 \tif [ -d ${_pkgname} ]; then
 \t\tgit subtree split -P ${_pkgname} --branch ${_pkgname}
